@@ -1,17 +1,16 @@
 // lib/views/main_screen.dart
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-// Impor semua halaman yang akan ditampilkan di navigasi bawah
 import 'package:project_tb_sportscope_prakpm/views/home_screen.dart';
 import 'package:project_tb_sportscope_prakpm/views/myarticle_screen.dart';
 import 'package:project_tb_sportscope_prakpm/views/profile_screen.dart';
+import 'package:project_tb_sportscope_prakpm/views/login_screen.dart';
 
-// Impor warna palet aplikasi Anda
 const Color appColorPrimary = Color(0xFF072BF2);
 const Color appColorTextBlack = Color(0xFF0D0D0D);
-const String appFontFamily = 'Poppins';
-
+const String? appFontFamily = 'Poppins';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -21,61 +20,105 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  // Variabel untuk melacak indeks/halaman yang sedang aktif
   int _selectedIndex = 0;
+  bool _isLoggedIn = false;
+  bool _isLoading = true; // State untuk loading saat cek token
 
-  // Daftar halaman/widget yang akan ditampilkan
-  // Urutannya harus sesuai dengan urutan item di BottomNavigationBar
-  static const List<Widget> _pages = <Widget>[
-    HomeScreen(),
-    ArtikelSayaScreen(),
-    ProfileScreen(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _checkLoginStatus();
+  }
 
-  // Fungsi yang akan dipanggil saat salah satu tab navigasi ditekan
-  void _onItemTapped(int index) {
+  // Fungsi untuk mengecek token saat aplikasi dibuka
+  Future<void> _checkLoginStatus() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('auth_token');
+
     setState(() {
-      _selectedIndex = index;
+      _isLoggedIn = (token != null && token.isNotEmpty);
+      _isLoading = false; // Selesai loading
     });
+  }
+
+  // Fungsi untuk menangani logout dari ProfileScreen
+  Future<void> _handleLogout() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('auth_token'); // Hapus token
+    setState(() {
+      _isLoggedIn = false;
+      _selectedIndex = 0; // Kembali ke tab Beranda
+    });
+  }
+
+  // Fungsi untuk menangani navigasi ke login, lalu refresh state
+  void _navigateToLogin() async {
+    // Tunggu hasil dari halaman login
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+    );
+    // Setelah kembali dari login, cek ulang statusnya
+    _checkLoginStatus();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // Body akan menampilkan halaman dari list `_pages` sesuai dengan indeks yang aktif
-      body: _pages.elementAt(_selectedIndex),
-      
-      // Definisikan BottomNavigationBar di sini
-      bottomNavigationBar: BottomNavigationBar(
-        // Daftar item/tombol navigasi
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home), // Ikon saat aktif
-            label: 'Beranda',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.article_outlined),
-            activeIcon: Icon(Icons.article),
-            label: 'Artikel Saya',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
-            label: 'Profil',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+    // Tampilkan loading indicator saat sedang mengecek token
+    if (_isLoading) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(color: appColorPrimary),
+        ),
+      );
+    }
+    
+    // Siapkan halaman dan item navigasi berdasarkan status login
+    final List<Widget> pages = _isLoggedIn
+        ? [ // Tampilan untuk Creator (sudah login)
+            const HomeScreen(),
+            const ArtikelSayaScreen(),
+            ProfileScreen(
+              isLoggedIn: _isLoggedIn,
+              onLogout: _handleLogout, // Kirim fungsi logout
+              onLogin: _navigateToLogin,
+            ),
+          ]
+        : [ // Tampilan untuk Viewer (belum login)
+            const HomeScreen(),
+            ProfileScreen(
+              isLoggedIn: _isLoggedIn,
+              onLogout: _handleLogout,
+              onLogin: _navigateToLogin, // Kirim fungsi login
+            ),
+          ];
 
-        // Styling untuk BottomNavigationBar
-        backgroundColor: Colors.white,
-        type: BottomNavigationBarType.fixed, // Agar semua label terlihat dan ukurannya tetap
+    final List<BottomNavigationBarItem> navBarItems = _isLoggedIn
+        ? [ // Menu untuk Creator
+            const BottomNavigationBarItem(icon: Icon(Icons.home_outlined), activeIcon: Icon(Icons.home), label: 'Beranda'),
+            const BottomNavigationBarItem(icon: Icon(Icons.article_outlined), activeIcon: Icon(Icons.article), label: 'Artikel Saya'),
+            const BottomNavigationBarItem(icon: Icon(Icons.person_outline), activeIcon: Icon(Icons.person), label: 'Profil'),
+          ]
+        : [ // Menu untuk Viewer
+            const BottomNavigationBarItem(icon: Icon(Icons.home_outlined), activeIcon: Icon(Icons.home), label: 'Beranda'),
+            const BottomNavigationBarItem(icon: Icon(Icons.person_outline), activeIcon: Icon(Icons.person), label: 'Profil'),
+          ];
+
+    return Scaffold(
+      body: pages.elementAt(_selectedIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        items: navBarItems,
+        currentIndex: _selectedIndex,
+        onTap: (int index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        type: BottomNavigationBarType.fixed,
         selectedItemColor: appColorPrimary,
         unselectedItemColor: appColorTextBlack.withOpacity(0.6),
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600, fontFamily: appFontFamily),
         unselectedLabelStyle: const TextStyle(fontFamily: appFontFamily),
-        elevation: 8.0,
       ),
     );
   }

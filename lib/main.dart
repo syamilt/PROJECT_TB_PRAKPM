@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
     ));
     
     return MaterialApp(
-      title: 'SportScope', // Judul aplikasi Anda
+      title: 'InfoZine', // Judul aplikasi Anda
       theme: ThemeData(
         // --- TEMA UTAMA APLIKASI ---
         fontFamily: 'Poppins', // Mengatur Poppins sebagai font default untuk seluruh aplikasi

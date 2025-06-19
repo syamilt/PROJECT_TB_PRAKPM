@@ -147,11 +147,88 @@ class ApiService {
     }
   }
 
-  // --- Tempat untuk fungsi-fungsi CRUD nanti ---
+  // --- FUNGSI BARU UNTUK CRUD ---
 
-  // Future<List<Article>> getMyArticles(String token) async { ... }
-  // Future<void> createArticle(String token, Map<String, dynamic> articleData) async { ... }
-  // Future<void> updateArticle(String token, String articleId, Map<String, dynamic> articleData) async { ... }
-  // Future<void> deleteArticle(String token, String articleId) async { ... }
+  Future<List<Article>> getMyArticles(String token) async {
+    final Uri url = Uri.parse('$_baseUrl/author/news');
+    try {
+      final response = await http.get(
+        url,
+        headers: {'Authorization': 'Bearer $token'},
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        if (responseData['body']['success'] == true) {
+          final List<dynamic> articlesJson = responseData['body']['data'];
+          return articlesJson.map((json) => Article.fromJson(json)).toList();
+        } else {
+          throw Exception(responseData['body']['message']);
+        }
+      } else {
+        throw Exception('Gagal memuat artikel saya.');
+      }
+    } catch (e) {
+      throw Exception('Error: ${e.toString()}');
+    }
+  }
 
+  Future<void> createArticle(String token, Article article) async {
+    final Uri url = Uri.parse('$_baseUrl/author/news');
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(article.toJson()),
+      );
+      // --- PERBAIKAN DI SINI ---
+      // Sekarang kita terima status 201 (Created) ATAU 200 (OK) sebagai tanda sukses
+      if (response.statusCode != 201 && response.statusCode != 200) {
+        print('Error Body: ${response.body}'); // Tambahan untuk debug
+        throw Exception('Gagal membuat artikel baru. Status: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error: ${e.toString()}');
+    }
+  }
+
+  Future<void> updateArticle(String token, String articleId, Article article) async {
+    final Uri url = Uri.parse('$_baseUrl/author/news/$articleId');
+    try {
+      final response = await http.put(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(article.toJson()),
+      );
+      // Memastikan status 200 adalah sukses
+      if (response.statusCode != 200) {
+        print('Error Body: ${response.body}');
+        throw Exception('Gagal memperbarui artikel. Status: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error: ${e.toString()}');
+    }
+  }
+
+  Future<void> deleteArticle(String token, String articleId) async {
+    final Uri url = Uri.parse('$_baseUrl/author/news/$articleId');
+    try {
+      final response = await http.delete(
+        url,
+        headers: {'Authorization': 'Bearer $token'},
+      );
+      // Memastikan status 200 adalah sukses
+      if (response.statusCode != 200) {
+        print('Error Body: ${response.body}');
+        throw Exception('Gagal menghapus artikel. Status: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error: ${e.toString()}');
+    }
+  }
 }

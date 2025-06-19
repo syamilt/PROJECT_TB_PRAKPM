@@ -37,6 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Pendaftaran Berhasil (UI Only)')),
     );
+    Navigator.of(context).pop(); // atau pushReplacementNamed ke login
 
     
   }
