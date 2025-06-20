@@ -33,9 +33,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
    
     print(
-        'UI Only: Daftar dengan Data:\nNama: $_fullName\nEmail: $_email\nPassword: ${_passwordController.text}');
+        'Daftar dengan Data:\nNama: $_fullName\nEmail: $_email\nPassword: ${_passwordController.text}');
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Pendaftaran Berhasil (UI Only)')),
+      const SnackBar(content: Text('Pendaftaran Berhasil')),
     );
     Navigator.of(context).pop(); // atau pushReplacementNamed ke login
 

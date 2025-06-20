@@ -35,10 +35,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'InfoZine', // Judul aplikasi Anda
       theme: ThemeData(
-        // --- TEMA UTAMA APLIKASI ---
         fontFamily: 'Poppins', // Mengatur Poppins sebagai font default untuk seluruh aplikasi
         primaryColor: appColorPrimary,
-        scaffoldBackgroundColor: Colors.white, // Latar belakang default untuk semua scaffold
+        scaffoldBackgroundColor: Colors.white, // BG efault untuk semua scaffold
 
         // Skema warna untuk konsistensi
         colorScheme: ColorScheme.fromSeed(

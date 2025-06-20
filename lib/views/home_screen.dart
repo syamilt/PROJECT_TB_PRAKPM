@@ -29,7 +29,13 @@ class _HomeScreenState extends State<HomeScreen> {
   final BookmarkService _bookmarkService = BookmarkService();
   Set<String> _bookmarkedSlugs = {};
 
-  final List<String> _popularTopics = const ['Sports', 'Technology', 'Business', 'Health', 'Entertainment'];
+  final List<String> _popularTopics = const [
+  'Olahraga', 
+  'Teknologi', 
+  'Politik', 
+  'Kesehatan', 
+  'Kuliner'
+];
   
   @override
   void initState() {
