@@ -5,7 +5,7 @@ import 'package:project_tb_sportscope_prakpm/views/news_detail_screen.dart';
 // Konstanta warna dan font
 const Color appColorPrimary = Color(0xFF072BF2);
 const Color appColorTextBlack = Color(0xFF0D0D0D);
-const String? appFontFamily = 'Poppins';
+const String appFontFamily = 'Poppins';
 
 class CustomSearchDelegate extends SearchDelegate<Article> {
   // Kita akan menerima daftar semua artikel dari HomeScreen

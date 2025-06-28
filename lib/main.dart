@@ -1,5 +1,3 @@
-// lib/main.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Diperlukan untuk SystemUiOverlayStyle
 import 'package:intl/date_symbol_data_local.dart'; // Impor untuk format tanggal

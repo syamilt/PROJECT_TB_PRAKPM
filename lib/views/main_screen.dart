@@ -1,5 +1,3 @@
-// lib/views/main_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,7 +8,7 @@ import 'package:project_tb_sportscope_prakpm/views/login_screen.dart';
 
 const Color appColorPrimary = Color(0xFF072BF2);
 const Color appColorTextBlack = Color(0xFF0D0D0D);
-const String? appFontFamily = 'Poppins';
+const String appFontFamily = 'Poppins';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

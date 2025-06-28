@@ -1,5 +1,3 @@
-// lib/views/home_screen.dart (VERSI FINAL DENGAN PERBAIKAN LAYOUT)
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:project_tb_sportscope_prakpm/models/article_model.dart';
@@ -7,14 +5,13 @@ import 'package:project_tb_sportscope_prakpm/services/api_service.dart';
 import 'package:project_tb_sportscope_prakpm/services/bookmark_service.dart';
 import 'package:project_tb_sportscope_prakpm/views/all_categories_screen.dart';
 import 'package:project_tb_sportscope_prakpm/views/bookmark_screen.dart';
-import 'package:project_tb_sportscope_prakpm/views/category_news_screen.dart';
 import 'package:project_tb_sportscope_prakpm/views/news_detail_screen.dart';
 import 'package:project_tb_sportscope_prakpm/views/search_delegate.dart';
 
 // Konstanta
 const Color appColorPrimary = Color(0xFF072BF2);
 const Color appColorTextBlack = Color(0xFF0D0D0D);
-const String? appFontFamily = 'Poppins';
+const String appFontFamily = 'Poppins';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -159,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildHeadlineCarousel(List<Article> articles) {
-    return Container(
+    return SizedBox(
       height: 220,
       child: PageView.builder(
         controller: PageController(viewportFraction: 0.9),
@@ -202,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildPopularTopics(BuildContext context, List<String> topics) {
-    return Container(
+    return SizedBox(
       height: 38,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -233,7 +230,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // --- FUNGSI DENGAN PERBAIKAN FINAL ---
   Widget _buildLatestNewsList(List<Article> articles) {
     return ListView.builder( // Diubah ke ListView.builder agar lebih efisien
       shrinkWrap: true,
@@ -253,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             borderRadius: BorderRadius.circular(12.0),
             child: Container(
-              // TINGGI KARTU TIDAK LAGI DIPAKSA (DIHAPUS)
+            
               decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12.0), border: Border.all(color: Colors.grey[200]!)),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -263,11 +259,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: (article.featuredImageUrl != null && article.featuredImageUrl!.isNotEmpty)
                         ? Image.network(
                             article.featuredImageUrl!,
-                            width: 120, // Sedikit diperlebar
-                            height: 120, // Tinggi gambar menjadi patokan
+                            width: 120, 
+                            height: 120, 
                             fit: BoxFit.cover,
                             filterQuality: FilterQuality.medium,
-                            loadingBuilder: (context, child, loadingProgress) => loadingProgress == null ? child : Container(width: 120, height: 120, child: const Center(child: CircularProgressIndicator(strokeWidth: 2.0))),
+                            loadingBuilder: (context, child, loadingProgress) => loadingProgress == null ? child : SizedBox(width: 120, height: 120, child: const Center(child: CircularProgressIndicator(strokeWidth: 2.0))),
                             errorBuilder: (context, error, stackTrace) => Container(width: 120, height: 120, color: Colors.grey[200], child: Icon(Icons.broken_image, color: Colors.grey[400])),
                           )
                         : Container(width: 120, height: 120, color: Colors.grey[200], child: Icon(Icons.image_not_supported, color: Colors.grey[400])),

@@ -3,7 +3,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project_tb_sportscope_prakpm/views/forget_screen.dart';
 import 'package:project_tb_sportscope_prakpm/views/register_screen.dart';
-import 'package:project_tb_sportscope_prakpm/views/main_screen.dart';
 import 'package:project_tb_sportscope_prakpm/services/api_service.dart';
 
 // Konstanta
@@ -65,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final String? appFontFamily = 'Poppins';
+    final String appFontFamily = 'Poppins';
 
     return Scaffold(
       backgroundColor: Colors.white,

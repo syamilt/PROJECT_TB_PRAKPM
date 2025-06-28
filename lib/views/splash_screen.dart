@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final String? appFontFamily = 'Poppins';
+    final String appFontFamily = 'Poppins';
     return Scaffold(
       body: Center(
         child: Column(

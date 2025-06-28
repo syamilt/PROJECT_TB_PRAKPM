@@ -1,5 +1,3 @@
-// lib/views/bookmark_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:project_tb_sportscope_prakpm/models/article_model.dart';
 import 'package:project_tb_sportscope_prakpm/services/api_service.dart';
@@ -9,7 +7,7 @@ import 'package:project_tb_sportscope_prakpm/views/news_detail_screen.dart';
 // Konstanta warna dan font
 const Color appColorPrimary = Color(0xFF072BF2);
 const Color appColorTextBlack = Color(0xFF0D0D0D);
-const String? appFontFamily = 'Poppins';
+const String appFontFamily = 'Poppins';
 
 class BookmarkScreen extends StatefulWidget {
   const BookmarkScreen({super.key});
@@ -64,7 +62,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
           }
           if (snapshot.hasData && snapshot.data!.isNotEmpty) {
             final articles = snapshot.data!;
-            // Gunakan widget list yang sama seperti di HomeScreen untuk konsistensi
+            // Gunakan widget list yang sama seperti di HomeScreen 
             return ListView.builder(
               padding: const EdgeInsets.all(16.0),
               itemCount: articles.length,

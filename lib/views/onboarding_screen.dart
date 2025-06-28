@@ -96,7 +96,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const String? appFontFamily = 'Poppins';
+    const String appFontFamily = 'Poppins';
 
     final pageDecoration = PageDecoration(
       titleTextStyle: TextStyle(

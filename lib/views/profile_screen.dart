@@ -8,7 +8,7 @@ import 'package:project_tb_sportscope_prakpm/views/edit_profile_screen.dart';
 const Color appColorPrimary = Color(0xFF072BF2);
 const Color appColorTextBlack = Color(0xFF0D0D0D);
 const Color appColorTextSlightlyLighterBlack = Color(0xFF333333);
-const String? appFontFamily = 'Poppins';
+const String appFontFamily = 'Poppins';
 const String profileAvatarPath = 'assets/images/profile_avatar.png'; // Path untuk foto profil
 
 class ProfileScreen extends StatelessWidget {

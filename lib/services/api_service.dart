@@ -1,5 +1,3 @@
-// lib/services/api_service.dart
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:project_tb_sportscope_prakpm/models/article_model.dart'; // Pastikan path model ini benar
@@ -33,7 +31,7 @@ class ApiService {
       // Cek jika response sukses (200 atau 201)
       if (response.statusCode == 200 || response.statusCode == 201) {
 
-        // --- PERBAIKAN UTAMA DI SINI ---
+
         // Mengambil token sesuai struktur JSON yang benar: body -> data -> token
         if (responseData.containsKey('body') &&
             responseData['body'] is Map &&
@@ -57,16 +55,14 @@ class ApiService {
         throw Exception(errorMessage);
       }
     } catch (e) {
-      // Menangkap semua jenis error lain
       print('Error di fungsi login: $e');
       throw Exception('Gagal terhubung ke server. Periksa koneksi internet Anda.');
     }
   }
 
 
-  // --- GANTI FUNGSI INI DENGAN VERSI BARU ---
+
   Future<List<Article>> getPublicNews({String? category}) async {
-    // --- PERUBAHAN LOGIKA PEMBUATAN URL DI SINI ---
 
     // 1. Siapkan 'wadah' untuk parameter query
     final Map<String, String> queryParameters = {};
@@ -86,7 +82,7 @@ class ApiService {
     
     print('Fetching news from: $newsUrl'); // Print URL untuk debugging
 
-    // --- SISA KODE DI BAWAH INI TETAP SAMA ---
+  
     try {
       final response = await http.get(newsUrl);
       
@@ -120,7 +116,7 @@ class ApiService {
     }
   }
 
-// --- FUNGSI BARU UNTUK MENGAMBIL SATU BERITA BERDASARKAN SLUG ---
+//FUNGSI UNTUK MENGAMBIL SATU BERITA BERDASARKAN SLUG
   Future<Article> getNewsBySlug(String slug) async {
     final Uri newsUrl = Uri.parse('$_baseUrl/news/$slug');
 
@@ -147,7 +143,7 @@ class ApiService {
     }
   }
 
-  // --- FUNGSI BARU UNTUK CRUD ---
+  //FUNGSI CRUD 
 
   Future<List<Article>> getMyArticles(String token) async {
     final Uri url = Uri.parse('$_baseUrl/author/news');
